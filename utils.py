@@ -1,7 +1,6 @@
+import csv
 import os
 import pathlib
-import xml.dom.minidom as md
-import xml.etree.ElementTree as ET
 from typing import List, Tuple, Optional
 
 import networkx as nx
@@ -9,7 +8,7 @@ import numpy as np
 import torch_geometric.utils as tutils
 from torch_geometric.datasets import TUDataset
 from tqdm import tqdm
-import csv
+
 
 ############################################
 #                  Loader                  #
@@ -89,21 +88,6 @@ def _write_classes(graph_cls: np.ndarray,
     Returns:
 
     """
-    # graph_collection = ET.Element('GraphCollection')
-    #
-    # idx_graph_to_classes = ET.SubElement(graph_collection, 'idx_graph_to_classes')
-    #
-    # for idx_graph, cls in enumerate(graph_cls):
-    #     element = ET.SubElement(idx_graph_to_classes, 'element')
-    #     element.set('graph_file', f'gr_{idx_graph}.graphml')
-    #     element.set('class', str(cls))
-    #
-    # b_xml = ET.tostring(graph_collection).decode()
-    # newxml = md.parseString(b_xml)
-    #
-    # with open(filename, mode='w') as f:
-    #     f.write(newxml.toprettyxml(indent=' ', newl='\n'))
-
     with open(filename, mode='w') as csv_file:
         fieldnames = ['graph_file', 'class']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -112,8 +96,6 @@ def _write_classes(graph_cls: np.ndarray,
         for idx_graph, cls in enumerate(graph_cls):
             writer.writerow({'graph_file': f'gr_{idx_graph}.graphml',
                              'class': str(cls)})
-
-
 
 
 def save_graphs(path: str,
@@ -146,5 +128,5 @@ def save_graphs(path: str,
         nx.write_graphml_lxml(copied_graph, path_to_graph, prettyprint=True)
 
     if graph_cls is not None:
-        filename_cls = os.path.join(path, 'graph_classes.cxl')
+        filename_cls = os.path.join(path, 'graph_classes.csv')
         _write_classes(graph_cls, filename_cls)
