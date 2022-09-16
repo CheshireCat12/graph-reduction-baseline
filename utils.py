@@ -9,7 +9,7 @@ import numpy as np
 import torch_geometric.utils as tutils
 from torch_geometric.datasets import TUDataset
 from tqdm import tqdm
-
+import csv
 
 ############################################
 #                  Loader                  #
@@ -89,20 +89,31 @@ def _write_classes(graph_cls: np.ndarray,
     Returns:
 
     """
-    graph_collection = ET.Element('GraphCollection')
+    # graph_collection = ET.Element('GraphCollection')
+    #
+    # idx_graph_to_classes = ET.SubElement(graph_collection, 'idx_graph_to_classes')
+    #
+    # for idx_graph, cls in enumerate(graph_cls):
+    #     element = ET.SubElement(idx_graph_to_classes, 'element')
+    #     element.set('graph_file', f'gr_{idx_graph}.graphml')
+    #     element.set('class', str(cls))
+    #
+    # b_xml = ET.tostring(graph_collection).decode()
+    # newxml = md.parseString(b_xml)
+    #
+    # with open(filename, mode='w') as f:
+    #     f.write(newxml.toprettyxml(indent=' ', newl='\n'))
 
-    idx_graph_to_classes = ET.SubElement(graph_collection, 'idx_graph_to_classes')
+    with open(filename, mode='w') as csv_file:
+        fieldnames = ['graph_file', 'class']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
 
-    for idx_graph, cls in enumerate(graph_cls):
-        element = ET.SubElement(idx_graph_to_classes, 'element')
-        element.set('graph_file', f'gr_{idx_graph}.graphml')
-        element.set('class', str(cls))
+        for idx_graph, cls in enumerate(graph_cls):
+            writer.writerow({'graph_file': f'gr_{idx_graph}.graphml',
+                             'class': str(cls)})
 
-    b_xml = ET.tostring(graph_collection).decode()
-    newxml = md.parseString(b_xml)
 
-    with open(filename, mode='w') as f:
-        f.write(newxml.toprettyxml(indent=' ', newl='\n'))
 
 
 def save_graphs(path: str,
