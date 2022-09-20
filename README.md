@@ -13,7 +13,13 @@ This python module is used to retrieve the graph datasets from [TUDataset](https
     pip install torch==1.12.0
     ```
 
-2. Install the other dependencies by hand (problems during the installation of torch_geometric)
+2.1 Install the other dependencies
+
+    ```
+    pip install -r requirements.txt
+    ```
+
+2.2 If a segmentation fault appears try installing by hand (problems during the installation of torch_geometric)
 
     ```
     pip install numpy networkx tqdm torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.12.0+cu102.html
