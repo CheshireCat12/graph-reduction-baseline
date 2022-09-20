@@ -148,6 +148,7 @@ def set_global_verbose(verbose: bool = False) -> None:
     """
     import logging
     from functools import partialmethod
+    from tqdm import tqdm
 
     if verbose:
         logging.basicConfig(level=logging.INFO)
