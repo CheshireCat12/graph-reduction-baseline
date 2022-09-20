@@ -4,11 +4,12 @@ The corresponding classes are saved in a separate file.
 """
 import argparse
 
-import numpy as np
-from utils import load_graphs_from_TUDataset, save_graphs
+from utils import load_graphs_from_TUDataset, save_graphs, set_global_verbose
 
 
 def main(args):
+    set_global_verbose(args.verbose)
+
     nx_graphs, graph_classes = load_graphs_from_TUDataset(args.root_dataset,
                                                           args.dataset)
 
@@ -53,8 +54,5 @@ if __name__ == '__main__':
                              help='Activate verbose print')
 
     parse_args = args_parser.parse_args()
-
-    if parse_args.verbose:
-        logging.basicConfig(level=logging.INFO)
 
     main(parse_args)

@@ -130,3 +130,26 @@ def save_graphs(path: str,
     if graph_cls is not None:
         filename_cls = os.path.join(path, 'graph_classes.csv')
         _write_classes(graph_cls, filename_cls)
+
+############################################
+#              Verbose                     #
+############################################
+def set_global_verbose(verbose: bool = False) -> None:
+    """
+    Set the global verbose.
+    Activate the logging module (use `logging.info('Hello world!')`)
+    Activate the tqdm loading bar.
+
+    Args:
+        verbose: If `True` activate the global verbose
+
+    Returns:
+
+    """
+    import logging
+    from functools import partialmethod
+
+    if verbose:
+        logging.basicConfig(level=logging.INFO)
+    else:
+        tqdm.__init__ = partialmethod(tqdm.__init__, disable=not verbose)
