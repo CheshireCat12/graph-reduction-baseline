@@ -6,9 +6,10 @@ from typing import List, Tuple, Optional
 import networkx as nx
 import numpy as np
 import torch_geometric.utils as tutils
+from torch_geometric.data import Data
 from torch_geometric.datasets import TUDataset
 from tqdm import tqdm
-
+import torch
 
 ############################################
 #                  Loader                  #
@@ -33,10 +34,26 @@ def load_graphs_from_TUDataset(root: str,
     dataset = TUDataset(root=root, name=name_dataset)
 
     node_attr = 'x'
+    is_graph_labelled = True
+
+    # Check if the graphs have the node attribute `x`
+    try:
+        dataset[0]['x']
+    except KeyError:
+        is_graph_labelled = False
 
     # Convert the PyG graphs into NetworkX graphs
-    nx_graphs = [tutils.to_networkx(graph, node_attrs=[node_attr], to_undirected=True)
-                 for graph in dataset]
+    nx_graphs = []
+    for graph in tqdm(dataset, desc='Convert graph to nx.Graph'):
+        if not is_graph_labelled:
+            graph = Data(x=torch.tensor(np.ones((graph.num_nodes, 2))),
+                         y=graph.y,
+                         edge_index=graph.edge_index)
+
+        nx_graph = tutils.to_networkx(graph,
+                                      node_attrs=[node_attr],
+                                      to_undirected=True)
+        nx_graphs.append(nx_graph)
 
     # Cast the node attribute x from list into np.array
     for nx_graph in nx_graphs:

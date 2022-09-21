@@ -111,3 +111,8 @@ options:
   -v, --verbose         Activate verbose print
 
 ```
+
+## Caution mark
+
+If the graph dataset is unlabelled (i.e., it does have the `x` attribute),
+then a node attribute `x=torch.tensor([1., 1.], [1., 1.], ...)` is automatically created.
