@@ -35,9 +35,10 @@ def load_graphs_from_TUDataset(root: str,
     dataset = TUDataset(root=root, name=name_dataset)
 
     node_attr = 'x'
+
     tmp_graph = dataset[0]
     is_graph_labelled = node_attr in tmp_graph.keys
-    is_graph_lbl_empty = tmp_graph.x.size(1) == 0
+    is_graph_lbl_empty = tmp_graph.x.size(1) == 0 if is_graph_labelled else True
 
     # Convert the PyG graphs into NetworkX graphs
     nx_graphs = []
