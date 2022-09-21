@@ -5,11 +5,12 @@ from typing import List, Tuple, Optional
 
 import networkx as nx
 import numpy as np
+import torch
 import torch_geometric.utils as tutils
 from torch_geometric.data import Data
 from torch_geometric.datasets import TUDataset
 from tqdm import tqdm
-import torch
+
 
 ############################################
 #                  Loader                  #
