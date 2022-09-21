@@ -35,18 +35,15 @@ def load_graphs_from_TUDataset(root: str,
     dataset = TUDataset(root=root, name=name_dataset)
 
     node_attr = 'x'
-    is_graph_labelled = True
-
-    # Check if the graphs have the node attribute `x`
-    try:
-        dataset[0]['x']
-    except KeyError:
-        is_graph_labelled = False
+    tmp_graph = dataset[0]
+    is_graph_labelled = node_attr in tmp_graph.keys
+    is_graph_lbl_empty = tmp_graph.x.size(1) == 0
 
     # Convert the PyG graphs into NetworkX graphs
     nx_graphs = []
     for graph in tqdm(dataset, desc='Convert graph to nx.Graph'):
-        if not is_graph_labelled:
+        # Check if the graph is unlabelled
+        if not is_graph_labelled or is_graph_lbl_empty:
             graph = Data(x=torch.tensor(np.ones((graph.num_nodes, 2))),
                          y=graph.y,
                          edge_index=graph.edge_index)
