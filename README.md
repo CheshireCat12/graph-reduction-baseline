@@ -7,17 +7,21 @@ This python module is used to retrieve the graph datasets from [TUDataset](https
 ## Install
 
 1. Pytorch needs to be installed before the other dependencies.
-   The pytorch version (1.12.0) may be important to make the torch-geometric's dependency modules work properly.
+The pytorch version (1.12.0) may be important to make the torch-geometric's dependency modules work properly.
 
     ```
     pip install torch==1.12.0
     ```
 
-2. Install the other dependencies via the `requirements.txt` file.
+2. Install the other dependencies
 
     ```
     pip install -r requirements.txt
     ```
+
+If a segmentation fault appears try installing by hand (problems during the installation of torch_geometric)
+
+    pip install numpy networkx tqdm torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.12.0+cu102.html
 
 
 ## How to use
